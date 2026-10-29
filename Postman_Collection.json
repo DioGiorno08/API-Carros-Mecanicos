@@ -1,0 +1,164 @@
+{
+  "info": {
+    "name": "API Taller - Pruebas CRUD",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:4000"
+    },
+    {
+      "key": "carroId",
+      "value": ""
+    },
+    {
+      "key": "mecanicoId",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "carros",
+      "item": [
+        {
+          "name": "Consultar todos",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/carros"
+          }
+        },
+        {
+          "name": "Crear",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/carros",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"marca\": \"Toyota\",\n  \"modelo\": \"Corolla\",\n  \"año\": 2020,\n  \"color\": \"Blanco\",\n  \"placa\": \"P123456\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201) pm.collectionVariables.set(\"carroId\", pm.response.json()._id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Consultar por ID",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/carros/{{carroId}}"
+          }
+        },
+        {
+          "name": "Modificar",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/carros/{{carroId}}",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"marca\": \"Toyota\",\n  \"modelo\": \"Corolla\",\n  \"año\": 2020,\n  \"color\": \"Blanco\",\n  \"placa\": \"P123456\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Eliminar",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/carros/{{carroId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "mecanicos",
+      "item": [
+        {
+          "name": "Consultar todos",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/mecanicos"
+          }
+        },
+        {
+          "name": "Crear",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/mecanicos",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Carlos\",\n  \"apellido\": \"Perez\",\n  \"especialidad\": \"Motores\",\n  \"telefono\": \"77778888\",\n  \"añosExperiencia\": 5\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201) pm.collectionVariables.set(\"mecanicoId\", pm.response.json()._id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Consultar por ID",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/mecanicos/{{mecanicoId}}"
+          }
+        },
+        {
+          "name": "Modificar",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/mecanicos/{{mecanicoId}}",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Carlos\",\n  \"apellido\": \"Perez\",\n  \"especialidad\": \"Motores\",\n  \"telefono\": \"77778888\",\n  \"añosExperiencia\": 5\n}"
+            }
+          }
+        },
+        {
+          "name": "Eliminar",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/mecanicos/{{mecanicoId}}"
+          }
+        }
+      ]
+    }
+  ]
+}
