@@ -1,0 +1,23 @@
+const express = require('express');
+const cors = require('cors');
+const rateLimit = require('express-rate-limit');
+const carros = require('./routes/carros');
+const mecanicos = require('./routes/mecanicos');
+const app = express();
+app.disable('x-powered-by');
+app.use(cors());
+app.use(express.json({ limit: '20kb' }));
+app.use(rateLimit({ windowMs: 60 * 1000, limit: 60, standardHeaders: 'draft-7', legacyHeaders: false, message: { mensaje: 'Demasiadas solicitudes. Intenta más tarde.' } }));
+app.get('/', (req, res) => res.json({ mensaje: 'API de taller funcionando' }));
+app.use('/api/carros', carros);
+app.use('/api/mecanicos', mecanicos);
+app.use((req, res) => res.status(404).json({ mensaje: 'Ruta no encontrada' }));
+app.use((err, req, res, next) => {
+  if (err instanceof SyntaxError && err.status === 400 && 'body' in err) return res.status(400).json({ mensaje: 'JSON inválido' });
+  if (err.name === 'ValidationError') return res.status(400).json({ mensaje: 'Datos inválidos', errores: Object.values(err.errors).map(e => e.message) });
+  if (err.name === 'CastError') return res.status(400).json({ mensaje: 'Identificador inválido' });
+  if (err.code === 11000) return res.status(409).json({ mensaje: 'Ya existe un registro con ese valor único' });
+  console.error(err);
+  res.status(500).json({ mensaje: 'Error interno del servidor' });
+});
+module.exports = app;
